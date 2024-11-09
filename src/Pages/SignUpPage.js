@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import Header from '../Components/Header';
 import { Link, useNavigate } from 'react-router-dom';
 import { ValidateForm, ValidateName } from '../utils/validateForm';
+import { createUserWithEmailAndPassword , updateProfile} from 'firebase/auth';
+import { auth } from '../utils/firebase';
+import { BG_IMG } from '../utils/constant';
 
 const SignUpPage = () => {
   const navigate=useNavigate();
@@ -13,9 +16,35 @@ const SignUpPage = () => {
     const signUpHandler=()=>{
        const mess= ValidateForm(email, password);
        const name= ValidateName(fullName);
-       console.log("name, mess", name, mess);
+       
        if(mess===null&&name===null){
         setMessage("");
+
+        createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log("success yes");
+    updateProfile(user, {
+      displayName: fullName,
+    }).then(() => {
+      console.log("success");
+      // Profile updated!
+      // ...
+    }).catch((error) => {
+      // An error occurred
+      // ...
+    });
+    
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log("error",errorCode+" "+errorMessage );
+    // ..
+  });
+
         navigate("/login");
         return null;
        }
@@ -42,7 +71,7 @@ const SignUpPage = () => {
          <Header/>
          <img
     className=" w-full h-screen object-cover"
-    src="https://assets.nflxext.com/ffe/siteui/vlv3/74d734ca-0eab-4cd9-871f-bca01823d872/web/IN-en-20241021-TRIFECTA-perspective_2277eb50-9da3-4fdf-adbe-74db0e9ee2cf_large.jpg"
+    src={BG_IMG}
     alt="banner"
   />
   <div className=' absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/5 min-h-96 bg-black opacity-70 flex flex-col p-6 text-white rounded-lg'>

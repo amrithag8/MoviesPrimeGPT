@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ValidateForm } from '../utils/validateForm';
 import { generateCatcha } from '../utils/generateCatcha';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../utils/firebase';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../Store/userSlice';
+import { BG_IMG } from '../utils/constant';
 
 const LoginPage = () => {
   const navigate=useNavigate();
+  const dispatch=useDispatch();
+  
+
+  const[signUppage, setSignUppage]=useState(false);
     const [email, setEmail]=useState("");
     const[password, setPassword]=useState("");
     const[message, setMessage]=useState();
@@ -14,6 +23,7 @@ const LoginPage = () => {
     const[refreshCaptcha, setRefreshCaptcha]=useState(false);
 
     useEffect(()=>{
+
       const newCaptcha=generateCatcha();
       setCaptcha(newCaptcha);
     },[ refreshCaptcha])
@@ -29,9 +39,29 @@ const captchaWithoutspace=captcha.split(" ").join("");
 setMessage(mess);
 if(mess===null){
   if(captchaWithoutspace===newCaptcha){
+
+
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user, "user token is", user.accessToken);
+    localStorage.setItem("user", user.displayName);
+    dispatch(addUser({UUID:user.uid, displayName:user.displayName}))
     navigate("/browse");
     setPassword("");
     setEmail("");
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // console.log(errorMessage);
+    
+    setMessage("Invalid email/password");
+  });
+    
+    
     setNewCaptcha("");
     
   }
@@ -56,7 +86,7 @@ if(mess===null){
          <Header/>
          <img
     className=" w-full h-screen object-cover"
-    src="https://assets.nflxext.com/ffe/siteui/vlv3/74d734ca-0eab-4cd9-871f-bca01823d872/web/IN-en-20241021-TRIFECTA-perspective_2277eb50-9da3-4fdf-adbe-74db0e9ee2cf_large.jpg"
+    src={BG_IMG}
     alt="banner"
   />
   <div className=' absolute z-30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/5 min-h-96 bg-black opacity-70 flex flex-col p-8 text-white rounded-lg'>
@@ -70,12 +100,15 @@ if(mess===null){
   <input type="text" value={newCaptcha} placeholder='Type the Captcha here' className='p-2 m-2 bg-gray-700 rounded-sm'onChange={(e)=>setNewCaptcha(e.target.value)}/>
   <button className='p-2 m-2 text-white bg-red-700 rounded-md' onClick={handleSignin}>Sign In</button>
   <span className='text-red-400 ml-2'>{message}</span>
-  <Link to="/register"><p className='text-xs p-2 m-2 hover:underline cursor-pointer'>New to Movies Prime? Sign Up now</p></Link>
+  <p className='text-xs p-2 m-2 hover:underline cursor-pointer' onClick={()=>{
+    setSignUppage(true);
+    navigate("/register");}}>New to Movies Prime? Sign Up now</p>
+ 
   </div>
   </div>
 
   
-
+  
       
     </div>
     </div>
