@@ -3,15 +3,18 @@ import { useDispatch } from "react-redux";
 import { removeUser } from "../Store/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { SUPPORTING_LANNGUAGES } from "../utils/languageConstants";
-import { addSelectedLanguage } from "../Store/configSlice";
+import { LanguageChange, SUPPORTING_LANNGUAGES } from "../utils/languageConstants";
+import { addDropDown, addSelectedLanguage } from "../Store/configSlice";
 import { toggleGptButton } from "../Store/gptSlice";
+import DropDown from "./DropDown";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const gptToggle = useSelector((store) => store.gpt.toggleButton);
-  console.log("gptToggle", gptToggle);
+  const dropDownState=useSelector((store)=>store.Config.dropDown);
+  const selectedLanguage=useSelector((store)=>store.Config.lang);
+
   let { pathname } = useLocation();
 
   useEffect(() => {
@@ -26,74 +29,77 @@ const Header = () => {
     }
   }, []);
 
-  const signOutHandler = () => {
-    dispatch(removeUser());
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
+  
 
   const languageHandler = (e) => {
     dispatch(addSelectedLanguage(e.target.value));
   };
 
   return (
-    <div className="absolute text-red-500 z-50 items-center w-screen flex justify-between p-4">
-      <h1 className="font-lilita text-5xl font-extrabold">MOVIES PRIME</h1>
-      <div className="">
-        <img src="" />
+    
+    
+    
+      
+    <div className="absolute text-red-500 z-50 items-center w-screen md:flex justify-between py-8 pr-20 pl-8">
+        <h1 className="font-lilita text-3xl font-extrabold">MOVIES PRIME</h1> 
 
         {localStorage.getItem("user") && (
-          <div className="flex items-center gap-8">
-            {gptToggle && (
-              <select
+          <div className="flex items-center justify-center">
+            <p className="text-md font-bold pr-4">
+                {" "}
+                {LanguageChange[selectedLanguage]?.hi} <span className="text-2xl bg-gradient-to-r from-red-600 to-slate-500 text-transparent bg-clip-text">{localStorage.getItem("user")}</span>
+              </p>
+
+<div className="pr-4">
+                 <select
                 name="Languages"
                 id="languages"
                 className="p-2 bg-black rounded-md text-white"
                 onChange={languageHandler}
               >
+
                 {SUPPORTING_LANNGUAGES.map((item) => {
                   return <option value={item.identifier}>{item.name}</option>;
                 })}
               </select>
-            )}
-            {gptToggle ? (
-              <button
-                className="cursor-pointer bg-purple-800 p-2 rounded-lg m-2 text-white"
-                onClick={() => {
-                  navigate("/browse");
-                  dispatch(toggleGptButton());
-                }}
-              >
-                Home
-              </button>
-            ) : (
-              <button
-                className="cursor-pointer bg-purple-800 p-2 rounded-lg m-2 text-white"
-                onClick={() => {
-                  navigate("/gpt-search");
-                  dispatch(toggleGptButton());
-                }}
-              >
-                AI Search
-              </button>
-            )}
-
-            <div className="flex flex-col items-center">
-              <p className="text-xs font-bold">
-                {" "}
-                Hi {localStorage.getItem("user")}
-              </p>
-              <button
-                className="text-sm cursor-pointer p-2 bg-red-500 font-bold text-black rounded-md"
-                onClick={signOutHandler}
-              >
-                Logout
-              </button>
+            
             </div>
+
+              <div className="w-10 h-10 bg-red-500 rounded-md text-white flex flex-col align-center cursor-pointer" onClick={()=>dispatch(addDropDown())}>
+                <div className="flex text-6xl -m-6 gap-2 ml-0.5">
+                <div>&middot;</div>
+                <div>&middot;</div>
+                </div>
+                <div className="ml-3 font-black">
+                  --
+                  </div>
+                 
+
+                </div>
+
+                
+
+
+
+{
+  dropDownState&&(
+    gptToggle?
+    (<div className="absolute top-20 right-14">
+      <DropDown/>
+      </div>):(<div className="absolute top-20 right-10">
+      <DropDown/>
+      </div>)
+  )
+  
+}
+                
+               
+            
           </div>
         )}
       </div>
-    </div>
+    
+    
   );
 };
 

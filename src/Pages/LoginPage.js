@@ -45,7 +45,7 @@ if(mess===null){
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    console.log(user, "user token is", user.accessToken);
+    // console.log(user, "user token is", user.accessToken);
     localStorage.setItem("user", user.displayName);
     dispatch(addUser({UUID:user.uid, displayName:user.displayName}))
     navigate("/browse");
