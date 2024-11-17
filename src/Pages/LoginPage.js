@@ -89,7 +89,7 @@ if(mess===null){
     src={BG_IMG}
     alt="banner"
   />
-  <div className=' absolute z-30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/5 min-h-96 bg-black opacity-70 flex flex-col p-8 text-white rounded-lg'>
+  <div className=' absolute z-30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-1/5 sm:w-1/2 min-h-96 bg-black opacity-70 flex flex-col p-8 text-white rounded-lg'>
   <h1 className='text-white text-3xl m-2 bold'>Sign In</h1>
   <input type="text" value={email} placeholder='Email Address' className='p-2 m-2 bg-gray-700 rounded-sm' onChange={(e)=>setEmail(e.target.value)}/>
   <input type="password" value={password} placeholder='Password' className='p-2 m-2 bg-gray-700 rounded-sm'onChange={(e)=>setPassword(e.target.value)}/>

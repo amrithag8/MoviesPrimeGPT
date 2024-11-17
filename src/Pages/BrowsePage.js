@@ -42,7 +42,7 @@ const BrowsePage = () => {
 
       <MovieBanner movieSelected={nowPlayingMovies} />
 
-      <div className="-mt-48">
+      <div className="2xl:-mt-48 xl:-mt-32 lg:-mt-20">
         <MoviesCard
           id={"Container1"}
           title={LanguageChange[selectedLanguage]?.now_playing}

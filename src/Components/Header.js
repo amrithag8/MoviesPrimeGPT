@@ -39,13 +39,13 @@ const Header = () => {
     
     
     
-      
-    <div className="absolute text-red-500 z-50 items-center w-screen md:flex justify-between py-8 pr-20 pl-8">
-        <h1 className="font-lilita text-3xl font-extrabold">MOVIES PRIME</h1> 
+      <div className="flex flex-col">
+    <div className={`${gptToggle? 'absolute':'md:absolute'} text-red-500 z-50 items-center w-screen flex justify-between py-8 pr-20 pl-8`}>
+        <h1 className="font-lilita text-lg md:text-3xl font-extrabold text-center">MOVIES PRIME</h1> 
 
         {localStorage.getItem("user") && (
-          <div className="flex items-center justify-center">
-            <p className="text-md font-bold pr-4">
+          <div className=" flex items-center justify-center">
+            <p className="md:block hidden text-md font-bold pr-4">
                 {" "}
                 {LanguageChange[selectedLanguage]?.hi} <span className="text-2xl bg-gradient-to-r from-red-600 to-slate-500 text-transparent bg-clip-text">{localStorage.getItem("user")}</span>
               </p>
@@ -66,13 +66,8 @@ const Header = () => {
             </div>
 
               <div className="w-10 h-10 bg-red-500 rounded-md text-white flex flex-col align-center cursor-pointer" onClick={()=>dispatch(addDropDown())}>
-                <div className="flex text-6xl -m-6 gap-2 ml-0.5">
-                <div>&middot;</div>
-                <div>&middot;</div>
-                </div>
-                <div className="ml-3 font-black">
-                  --
-                  </div>
+                <img src="https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.jpg"/>
+                
                  
 
                 </div>
@@ -98,8 +93,14 @@ const Header = () => {
           </div>
         )}
       </div>
-    
-    
+      {
+        (localStorage.getItem('user')&&!gptToggle)&&(<p className=" md:hidden block z-50 text-center text-md font-bold pr-4">
+          
+           <span className="text-2xl bg-gradient-to-r from-red-600 to-slate-500 text-transparent bg-clip-text">{LanguageChange[selectedLanguage]?.hi} {localStorage.getItem("user")}</span>
+        </p>)
+      }
+      
+    </div>
   );
 };
 

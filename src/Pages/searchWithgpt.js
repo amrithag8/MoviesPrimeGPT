@@ -73,18 +73,18 @@ const SearchWithgpt = () => {
 
       <img
         src={BG_IMG}
-        className="blur-md backdrop-blur-xl min-h-screen w-screen fixed"
+        className="blur-md backdrop-blur-xl min-h-screen w-screen fixed object-cover"
       />
 
-<div className="w-screen h-screen absolute inset-0">
+<div className="w-screen h-screen absolute inset-0 px-14">
       <div
-        className="w-6/12 h-20  mt-32 mx-auto bg-black flex px-4 py-2 items-center justify-around rounded-md"
+        className="md:w-6/12 h-20 sm:w-full  xl:mt-32 sm:mt-64 mt-64 mx-auto bg-black flex px-4 py-2 items-center justify-around rounded-md"
         // style={{ top: "100px", transform: "translateX(-50%)" }}
       >
         <input
           type="text"
           placeholder={LanguageChange[selectedLanguage]?.placeHolderText}
-          className="w-3/4 h-2/3 px-4 py-2 text-lg rounded-md"
+          className="md:w-3/4 sm:w-full w-full h-2/3 px-4 py-2 text-lg rounded-md"
           value={searchVal}
           onChange={(e) => {if(e.target.value===""){
             dispatch(addGptsearchResult(null));
@@ -97,15 +97,22 @@ const SearchWithgpt = () => {
             }}
         />
         <button
-          className="bg-red-700 w-1/5 p-2.5 rounded-md"
+          className="bg-red-700 w-1/5 p-2.5 rounded-md hidden sm:block"
           onClick={handleAISearch}
         >
           {LanguageChange[selectedLanguage]?.search}
         </button>
+        <button
+          className="bg-red-700 w-1/5 p-2.5 rounded-md sm:hidden block"
+          onClick={handleAISearch}
+        >
+         <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
       </div>
 {
 (searchVal&&AIArray)&&
-(gptSearchMovies?(<div className=" w-6/12 min-h-64 mx-auto p-8 m-8 flex flex-wrap bg-black rounded-md opacity-70">
+(gptSearchMovies?(<div className=" w-6/12 min-h-64 mx-auto p-4 m-8 flex flex-wrap bg-black rounded-md opacity-70">
     {
       gptSearchMovies?.map((movie)=>{
         return(
