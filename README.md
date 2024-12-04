@@ -9,7 +9,7 @@ React, Redux tool kit, TailwindCSS, google firebase, TMDB API
 ## Demo
 
 Live URL: https://moviesprimegpt.web.app/login
-Demo: 
+Demo: https://youtu.be/PSR5-_Hr3z4?si=Di-spgn0MKNjUogy
 
 ## Features
 
